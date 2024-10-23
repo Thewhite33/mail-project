@@ -1,0 +1,44 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter email" required />
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" required />
+        <button id="login">Login</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.getElementById("login").addEventListener("click", () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (email && password) {
+                // Store the email and password in localStorage
+                localStorage.setItem("email", email);
+                localStorage.setItem("password", password);
+
+                // Redirect to the email page
+                window.location.href = "email.html";
+            } else {
+                alert("Please enter both email and password.");
+            }
+        });
+
+        // Check if user is already logged in, redirect to email page
+        if (localStorage.getItem("email") && localStorage.getItem("password")) {
+            window.location.href = "email.html";
+        }
+    </script>
+</body>
+</html>
