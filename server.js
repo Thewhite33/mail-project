@@ -15,6 +15,11 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
+// Add a route for the email page
+app.get("/email.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "email.html"));
+});
+
 // Handle any undefined routes (404)
 app.get("*", (req, res) => {
     res.status(404).send("Page Not Found");
@@ -30,7 +35,7 @@ io.on("connection", (socket) => {
         // Send the message to the intended recipient
         io.emit("receiveMessage", data); // In real cases, use rooms to target specific users
     });
-
+    
     socket.on("disconnect", () => {
         console.log("A user disconnected");
     });

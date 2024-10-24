@@ -1,4 +1,3 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,38 +6,37 @@
     <title>Login</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body id="login-body">
     <div class="login-container">
-        <h2>Login</h2>
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter email" required />
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter password" required />
-        <button id="login">Login</button>
+        <h2>Log in</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Enter email" required />
+            <input type="password" id="password" placeholder="Enter password" required />
+            <button type="submit" id="login">Log in</button>
+        </form>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        document.getElementById("login").addEventListener("click", () => {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+        const socket = io();
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
 
-            if (email && password) {
-                // Store the email and password in localStorage
-                localStorage.setItem("email", email);
-                localStorage.setItem("password", password);
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = emailInput.value;
+            const password = passwordInput.value;
 
-                // Redirect to the email page
-                window.location.href = "email.html";
-            } else {
-                alert("Please enter both email and password.");
-            }
+            // Store email in localStorage
+            localStorage.setItem('email', email);
+
+            // Emit login event to server (if needed)
+            socket.emit('login', { email, password });
+
+            // Redirect to email page
+            window.location.href = '/email.html';
         });
-
-        // Check if user is already logged in, redirect to email page
-        if (localStorage.getItem("email") && localStorage.getItem("password")) {
-            window.location.href = "email.html";
-        }
     </script>
 </body>
 </html>

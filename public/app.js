@@ -9,6 +9,12 @@ const messageInput = document.getElementById("message");
 
 const userEmail = localStorage.getItem("email");
 
+document.querySelector('.email-display').textContent = `${userEmail}`;
+// Check if user is logged in
+if (!userEmail) {
+    window.location.href = '/'; // Redirect to login page if not logged in
+}
+
 // Switch between sections
 function showCompose() {
     document.getElementById("composeSection").style.display = "block";
@@ -28,14 +34,14 @@ function showSent() {
     document.getElementById("sentSection").style.display = "block";
 }
 
-// Handle form submission
+
 emailForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const to = toInput.value;
     const subject = subjectInput.value || "(No Subject)";
     const message = messageInput.value;
 
-    // Send message using socket
+    
     socket.emit("sendMessage", {
         from: userEmail,
         to: to,
@@ -43,19 +49,19 @@ emailForm.addEventListener("submit", function (e) {
         message: message
     });
 
-    // Add message to sent list
+
     const sentItem = document.createElement("li");
     sentItem.className = "sent";
     sentItem.innerHTML = `<strong>To: ${to}</strong><br><em>${subject}</em><br>${message}`;
     sentList.appendChild(sentItem);
 
-    // Clear form fields
+    
     toInput.value = "";
     subjectInput.value = "";
     messageInput.value = "";
 });
 
-// Handle receiving messages
+
 socket.on("receiveMessage", function (data) {
     if (data.to === userEmail) {
         const inboxItem = document.createElement("li");
